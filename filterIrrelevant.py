@@ -41,7 +41,7 @@ print(datetime.datetime.now())
 
 
 print('creating dictionary')
-streetDitc = dict()
+streetDict = dict()
 for road in root.findall('road'):
     key = ""
     values = dict()
@@ -53,21 +53,21 @@ for road in root.findall('road'):
         	values[tag.tag] = speed
         else:
             values[tag.tag] = tag.text
-    streetDitc[key] = values
+    streetDict[key] = values
      
 
 print(datetime.datetime.now())
 
 print('adding missing params and removing unnecessary values')
 
-for key in list(streetDitc):
-    values = streetDitc[key]
+for key in list(streetDict):
+    values = streetDict[key]
 
     if(len(values)<3):
-        del streetDitc[key]
+        del streetDict[key]
         continue
     if(params.__contains__(values['highway'])):
-        del streetDitc[key]
+        del streetDict[key]
         continue
 
     for tag in tags:
@@ -75,7 +75,7 @@ for key in list(streetDitc):
             values[tag] = None
   
 print('done filtering!')
-json = json.dumps(streetDitc)
+json = json.dumps(streetDict)
 f = open("filtered-brooklyn.json", "w")
 f.write(json)
 f.close()
