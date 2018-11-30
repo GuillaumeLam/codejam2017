@@ -9,8 +9,9 @@ import json
 html_string = ''
 base_url = "https://api.opencagedata.com/geocode/v1/json?"
 
+f = open("codejam2017\key.txt", "r")
+key = f.read()
 
-key = "600635f3f5644582ad58708a7a24c811"
 lattitude = 0
 longitude = 0
 state = 0
@@ -23,8 +24,9 @@ def parseJson():
 
 
 def getCoordinates():
-    
-    
+
+    data = dict()
+
     file = open('./datasets/Transportation/NYC General Transport/vehicle-collisions-abridged.csv', 'r')
     j = 0
     with file as csvfile:
@@ -35,9 +37,10 @@ def getCoordinates():
             else:
                 lattitude = float(line[1])
                 longitude = float(line[2])
+                results = sendQuery(lattitude, longitude)
                 write_to_file(str(lattitude) + ', ' + str(longitude))
-                sendQuery(lattitude, longitude)
-                time.sleep(1.02)
+                
+                time.sleep(1.01)
 
             j+=1
             if(j >=1):
@@ -62,7 +65,8 @@ def sendQuery(lattitude, longitude):
             print('no results')
             return
         results = data['results']
-        write_to_file(results)
+        return results
+        #write_to_file(results)
     except:
         print('Error: cannot crawl page')
 
